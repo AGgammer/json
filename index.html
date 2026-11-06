@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Pages JSON Fetch</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f4f9; }
+        .card { background: white; padding: 20px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-top: 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Δεδομένα από το JSON αρχείο:</h1>
+    <div id="output">Φόρτωση δεδομένων...</div>
+
+    <script>
+        fetch('./data.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Το αρχείο JSON δεν βρέθηκε");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = '';
+
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `<h2>${item.title}</h2><p>${item.description}</p>`;
+                    outputDiv.appendChild(card);
+                });
+            })
+            .catch(error => {
+                document.getElementById('output').innerText = "Σφάλμα: " + error.message;
+            });
+    </script>
+</body>
+</html>
